@@ -4,9 +4,9 @@ const dob = document.getElementById("dob");
 dob.addEventListener("input", ()=>dobValidate(dob));
 email.addEventListener("input", ()=>emailValidate(email));    
 submit.addEventListener("submit", (event) => {
-
+    event.preventDefault();
     if(emailValid(email) && dobValidate(dob)){
-        event.preventDefault();
+       
     console.log("Form submission prevented!");
     const name = document.getElementById("name").value;
     const email = document.getElementById("email").value;
@@ -34,16 +34,20 @@ submit.addEventListener("submit", (event) => {
 displayData();
 
 function emailValid(element) {
-    if (element.validity.typeMismatch) {
-        element.setCustomValidity("Please enter a valid email address.");
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (element.value.trim() === "") {
+        element.setCustomValidity("Email address cannot be empty.");
+        element.reportValidity();
+        return false;  
+    } else if (!emailRegex.test(element.value)) {
+        element.setCustomValidity("Please enter a valid email address (e.g., user@domain.com).");
         element.reportValidity(); 
         return false;  
-    }
-    else {
+    } else {
         element.setCustomValidity("");
         return true;
     }
-
 }
 
 function dobValidate(element) { 
@@ -113,4 +117,3 @@ function displayData() {
     userEntries.innerHTML = table;
     
 }
-
