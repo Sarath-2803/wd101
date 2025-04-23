@@ -1,55 +1,12 @@
 const email = document.getElementById("email"); 
-const submit = document.getElementById("submit");
+const submit = document.getElementById("form");
 const dob = document.getElementById("dob");
 dob.addEventListener("input", ()=>dobValidate(dob));
 email.addEventListener("input", ()=>emailValidate(email));    
-submit.addEventListener("click", () => emailValidate(email));
+submit.addEventListener("submit", (event) => {
 
-displayData();
-
-function emailValidate(element) {
-    if (element.validity.typeMismatch) {
-        element.setCustomValidity("Please enter a valid email address.");
-        element.reportValidity();   
-    }
-    else {
-        element.setCustomValidity("");
-    }
-
-}
-
-function dobValidate(element) { 
-    const today = new Date(); // Current date
-    const dobDate = new Date(element.value); // Date of birth from input
-
-    const age = today.getFullYear() - dobDate.getFullYear(); // Calculate age based on year
-    const monthDifference = today.getMonth() - dobDate.getMonth(); // Calculate month difference
-    const dayDifference = today.getDate() - dobDate.getDate(); // Calculate day difference
-
-    // Check if age is less than 18
-    if (age < 18 || (age === 18 && (monthDifference < 0 || (monthDifference === 0 && dayDifference < 0)))) {
-        element.setCustomValidity("You must be at least 18 years old.");
-        element.reportValidity();
-        return;
-    }
-
-    // Check if age is greater than 55
-    if (age > 55 || (age === 55 && (monthDifference > 0 || (monthDifference === 0 && dayDifference > 0)))) {
-        element.setCustomValidity("You must be younger than 55 years old.");
-        element.reportValidity();
-        return;
-    }
-
-    // If valid, clear custom validity
-    element.setCustomValidity("");
-}
-
-let userEntry = fetchData();
-
-const form = document.getElementById("form");
-
-form.addEventListener("submit", (event) => {    
-    event.preventDefault();
+    if(emailValid(email) && dobValidate(dob)){
+        event.preventDefault();
     console.log("Form submission prevented!");
     const name = document.getElementById("name").value;
     const email = document.getElementById("email").value;
@@ -71,7 +28,55 @@ form.addEventListener("submit", (event) => {
 
     displayData();
 }
+    }
 );
+
+displayData();
+
+function emailValid(element) {
+    if (element.validity.typeMismatch) {
+        element.setCustomValidity("Please enter a valid email address.");
+        element.reportValidity(); 
+        return false;  
+    }
+    else {
+        element.setCustomValidity("");
+        return true;
+    }
+
+}
+
+function dobValidate(element) { 
+    const today = new Date(); // Current date
+    const dobDate = new Date(element.value); // Date of birth from input
+
+    const age = today.getFullYear() - dobDate.getFullYear(); // Calculate age based on year
+    const monthDifference = today.getMonth() - dobDate.getMonth(); // Calculate month difference
+    const dayDifference = today.getDate() - dobDate.getDate(); // Calculate day difference
+
+    // Check if age is less than 18
+    if (age < 18 || (age === 18 && (monthDifference < 0 || (monthDifference === 0 && dayDifference < 0)))) {
+        element.setCustomValidity("You must be at least 18 years old.");
+        element.reportValidity();
+        return false;
+    }
+
+    // Check if age is greater than 55
+    if (age > 55 || (age === 55 && (monthDifference > 0 || (monthDifference === 0 && dayDifference > 0)))) {
+        element.setCustomValidity("You must be younger than 55 years old.");
+        element.reportValidity();
+        return false;
+    }
+    else{
+    // If valid, clear custom validity
+    element.setCustomValidity("");
+    return true;
+}
+}
+
+let userEntry = fetchData();
+
+const form = document.getElementById("form");
 
 
 function fetchData(){
@@ -108,3 +113,4 @@ function displayData() {
     userEntries.innerHTML = table;
     
 }
+
