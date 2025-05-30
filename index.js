@@ -2,19 +2,24 @@ const email = document.getElementById("email");
 const form = document.getElementById("form");
 const dob = document.getElementById("dob");
 
+// Attach event listeners for real-time validation
 dob.addEventListener("input", () => dobValidate(dob));
 email.addEventListener("input", () => emailValid(email));
 
+// Handle form submission
 form.addEventListener("submit", (event) => {
-    event.preventDefault(); 
-    
+    event.preventDefault(); // Prevent form submission by default
+
+    // Validate email and DOB
     const isEmailValid = emailValid(email);
     const isDobValid = dobValidate(dob);
 
+    // If either validation fails, stop form submission
     if (!isEmailValid || !isDobValid) {
         return;
     }
 
+    console.log("Form submission prevented!");
     const name = document.getElementById("name").value;
     const emailValue = document.getElementById("email").value;
     const password = document.getElementById("password").value;
@@ -36,6 +41,7 @@ form.addEventListener("submit", (event) => {
     displayData();
 });
 
+// Email validation function
 function emailValid(element) {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
@@ -44,7 +50,7 @@ function emailValid(element) {
         element.reportValidity();
         return false;  
     } else if (!emailRegex.test(element.value)) {
-        element.setCustomValidity("Please enter a valid email address (e.g., user@domain.com).");
+        element.setCustomValidity("Please enter a valid email address");
         element.reportValidity(); 
         return false;  
     } else {
@@ -53,30 +59,35 @@ function emailValid(element) {
     }
 }
 
+// DOB validation function
 function dobValidate(element) { 
-    const today = new Date(); 
-    const dobDate = new Date(element.value); 
+    const today = new Date(); // Current date
+    const dobDate = new Date(element.value); // Date of birth from input
 
-    const age = today.getFullYear() - dobDate.getFullYear(); 
-    const monthDifference = today.getMonth() - dobDate.getMonth(); 
-    const dayDifference = today.getDate() - dobDate.getDate(); 
+    const age = today.getFullYear() - dobDate.getFullYear(); // Calculate age based on year
+    const monthDifference = today.getMonth() - dobDate.getMonth(); // Calculate month difference
+    const dayDifference = today.getDate() - dobDate.getDate(); // Calculate day difference
 
+    // Check if age is less than 18
     if (age < 18 || (age === 18 && (monthDifference < 0 || (monthDifference === 0 && dayDifference < 0)))) {
         element.setCustomValidity("You must be at least 18 years old.");
         element.reportValidity();
         return false;
     }
 
+    // Check if age is greater than 55
     if (age > 55 || (age === 55 && (monthDifference > 0 || (monthDifference === 0 && dayDifference > 0)))) {
         element.setCustomValidity("You must be younger than 55 years old.");
         element.reportValidity();
         return false;
     } else {
+        // If valid, clear custom validity
         element.setCustomValidity("");
         return true;
     }
 }
 
+// Fetch data from localStorage
 let userEntry = fetchData();
 
 function fetchData(){
@@ -91,6 +102,7 @@ function fetchData(){
     return data;
 }
 
+// Display data in a table
 function displayData() {
     const data = fetchData();
 
@@ -112,5 +124,5 @@ function displayData() {
     userEntries.innerHTML = table;
 }
 
+// Display data on page load
 displayData();
-
