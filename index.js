@@ -63,27 +63,20 @@ function emailValid(element) {
 function dobValidate(element) { 
     const today = new Date(); // Current date
     const dobDate = new Date(element.value); // Date of birth from input
-
-    // Ensure the input is a valid date
-    if (isNaN(dobDate.getTime())) {
-        element.setCustomValidity("Please enter a valid date.");
-        element.reportValidity();
-        return false;
-    }
-
+    
     const age = today.getFullYear() - dobDate.getFullYear(); // Calculate age based on year
     const monthDifference = today.getMonth() - dobDate.getMonth(); // Calculate month difference
     const dayDifference = today.getDate() - dobDate.getDate(); // Calculate day difference
 
-    // Check if age is less than 18
-    if (age < 18 || (age === 18 && (monthDifference < 0 || (monthDifference === 0 && dayDifference < 0)))) {
-        element.setCustomValidity("You must be at least 18 years old.");
+    // Check if age is less than or equal to 18
+    if (age <= 18 || (age === 18 && (monthDifference < 0 || (monthDifference === 0 && dayDifference <= 0)))) {
+        element.setCustomValidity("You must be older than 18 years old.");
         element.reportValidity();
         return false;
     }
 
-    // Check if age is greater than 55
-    if (age > 55 || (age === 55 && (monthDifference > 0 || (monthDifference === 0 && dayDifference > 0)))) {
+    // Check if age is greater than or equal to 55
+    if (age >= 55 || (age === 55 && (monthDifference > 0 || (monthDifference === 0 && dayDifference >= 0)))) {
         element.setCustomValidity("You must be younger than 55 years old.");
         element.reportValidity();
         return false;
