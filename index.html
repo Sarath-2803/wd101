@@ -31,7 +31,22 @@
         <button type="submit" id="submit">Submit</button>
     </form>
 
-    <table id="userEntries"></table>
+    <div id="userEntries">
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Password</th>
+                    <th>Dob</th>
+                    <th>Accepted terms?</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+                <!-- Rows will be dynamically added here -->
+            </tbody>
+        </table>
+    </div>
 
     <script src="index.js"></script>
 </body>

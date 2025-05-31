@@ -122,7 +122,10 @@ function fetchData(){
 function displayData() {
     const data = fetchData();
 
-    const tablerow = data.map(element => {
+    const tableBody = document.getElementById("tableBody");
+    tableBody.innerHTML = ""; // Clear existing rows
+
+    data.forEach(element => {
         const namecell = `<td>${element.name}</td>`;
         const emailcell = `<td>${element.email}</td>`;
         const passwordcell = `<td>${element.password}</td>`;
@@ -130,26 +133,8 @@ function displayData() {
         const termscell = `<td>${element.terms}</td>`;
 
         const row = `<tr>${namecell}${emailcell}${passwordcell}${dobcell}${termscell}</tr>`;
-        return row;
-    }).join("\n");
-
-    const table = `<table>
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Password</th>
-                <th>DOB</th>
-                <th>Accepted Terms?</th>
-            </tr>
-        </thead>
-        <tbody>
-            ${tablerow}
-        </tbody>
-    </table>`;
-
-    const userEntries = document.getElementById("userEntries");
-    userEntries.innerHTML = table;
+        tableBody.insertAdjacentHTML("beforeend", row);
+    });
 }
 
 // Display data on page load
