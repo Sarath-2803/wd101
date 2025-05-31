@@ -62,11 +62,11 @@ function dobValidate(element) {
     const dayDifference = today.getDate() - dobDate.getDate(); // Calculate day difference
 
     let valid = true;
-    if(age < 18 || age === 18 && (monthDifference < 0 || (monthDifference === 0 && dayDifference < 0))) {
+    if(age <= 18 || age === 18 && (monthDifference < 0 || (monthDifference === 0 && dayDifference < 0))) {
         element.setCustomValidity("You must be older than 18 years old.");
         valid = false;
     };
-    if(age > 55 || age === 55 && (monthDifference > 0 || (monthDifference === 0 && dayDifference > 0))) {
+    if(age >= 55 || age === 55 && (monthDifference > 0 || (monthDifference === 0 && dayDifference > 0))) {
         element.setCustomValidity("You must be younger than 55 years old.");
         valid = false;
     };
