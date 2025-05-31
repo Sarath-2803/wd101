@@ -63,28 +63,35 @@ function emailValid(element) {
 function dobValidate(element) { 
     const today = new Date(); // Current date
     const dobDate = new Date(element.value); // Date of birth from input
-    
+
     const age = today.getFullYear() - dobDate.getFullYear(); // Calculate age based on year
     const monthDifference = today.getMonth() - dobDate.getMonth(); // Calculate month difference
     const dayDifference = today.getDate() - dobDate.getDate(); // Calculate day difference
 
     // Check if age is less than or equal to 18
-    if (age <= 18 || (age === 18 && (monthDifference < 0 || (monthDifference === 0 && dayDifference <= 0)))) {
-        element.setCustomValidity("You must be older than 18 years old.");
+    // if (age <= 18 || (age === 18 && (monthDifference < 0 || (monthDifference === 0 && dayDifference <= 0)))) {
+    //     element.setCustomValidity("You must be older than 18 years old.");
+    //     element.reportValidity();
+    //     return false;
+    // }
+
+    // // Check if age is greater than or equal to 55
+    // if (age >= 55 || (age === 55 && (monthDifference > 0 || (monthDifference === 0 && dayDifference >= 0)))) {
+    //     element.setCustomValidity("You must be younger than 55 years old.");
+    //     element.reportValidity();
+    //     return false;
+    // }
+
+    // // If valid, clear custom validity
+    // element.setCustomValidity("");
+    // return true;
+    if(age <=18 || age >= 55) {
+        element.setCustomValidity("You must be between 18 and 55 years old.");
         element.reportValidity();
         return false;
+    }   else {
+        return true;
     }
-
-    // Check if age is greater than or equal to 55
-    if (age >= 55 || (age === 55 && (monthDifference > 0 || (monthDifference === 0 && dayDifference >= 0)))) {
-        element.setCustomValidity("You must be younger than 55 years old.");
-        element.reportValidity();
-        return false;
-    }
-
-    // If valid, clear custom validity
-    element.setCustomValidity("");
-    return true;
 }
 
 // Fetch data from localStorage
