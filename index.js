@@ -85,7 +85,7 @@ function dobValidate(element) {
     // // If valid, clear custom validity
     // element.setCustomValidity("");
     // return true;
-    if(age <=18 || age >= 55) {
+    if(age <18 || age > 55) {
         element.setCustomValidity("You must be between 18 and 55 years old.");
         element.reportValidity();
         return false;
