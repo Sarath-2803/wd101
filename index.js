@@ -3,7 +3,7 @@ const form = document.getElementById("form");
 const dob = document.getElementById("dob");
 
 // Attach event listeners for real-time validation
-dob.addEventListener("input", () => dobValidate(dob));
+// dob.addEventListener("input", () => dobValidate(dob));
 email.addEventListener("input", () => emailValid(email));
 
 // Handle form submission
