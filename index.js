@@ -2,15 +2,11 @@ const email = document.getElementById("email");
 const form = document.getElementById("form");
 const dob = document.getElementById("dob");
 
-// Attach event listeners for real-time validation
-// dob.addEventListener("input", () => dobValidate(dob));
 email.addEventListener("input", () => emailValid(email));
 
-// Handle form submission
 form.addEventListener("submit", (event) => {
-    event.preventDefault(); // Prevent form submission by default
+    event.preventDefault(); 
 
-    // Validate email and DOB
     const isEmailValid = emailValid(email);
     const isDobValid = dobValidate(dob);
 
@@ -19,18 +15,15 @@ form.addEventListener("submit", (event) => {
         return;
     }
 
-    console.log("Form submission prevented!");
     const name = document.getElementById("name").value;
-    const emailValue = document.getElementById("email").value;
     const password = document.getElementById("password").value;
-    const dobValue = document.getElementById("dob").value;
     const terms = document.getElementById("acceptTerms").checked;
 
     const Entry = {
         name: name,
-        email: emailValue,
+        email: email.value,
         password: password,
-        dob: dobValue,
+        dob: dob.value,
         terms: terms
     };
 
@@ -41,7 +34,7 @@ form.addEventListener("submit", (event) => {
     displayData();
 });
 
-// Email validation function
+
 function emailValid(element) {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
@@ -64,9 +57,25 @@ function dobValidate(element) {
     const today = new Date(); // Current date
     const dobDate = new Date(element.value); // Date of birth from input
 
-    const age = today.getFullYear() - dobDate.getFullYear(); // Calculate age based on year
+    let age = today.getFullYear() - dobDate.getFullYear(); // Calculate age based on year
     const monthDifference = today.getMonth() - dobDate.getMonth(); // Calculate month difference
     const dayDifference = today.getDate() - dobDate.getDate(); // Calculate day difference
+
+    let valid = true;
+    if(age < 18 || age === 18 && (monthDifference < 0 || (monthDifference === 0 && dayDifference < 0))) {
+        element.setCustomValidity("You must be older than 18 years old.");
+        valid = false;
+    };
+    if(age > 55 || age === 55 && (monthDifference > 0 || (monthDifference === 0 && dayDifference > 0))) {
+        element.setCustomValidity("You must be younger than 55 years old.");
+        valid = false;
+    };
+
+    return valid;
+
+    // const age = today.getFullYear() - dobDate.getFullYear(); // Calculate age based on year
+    // const monthDifference = today.getMonth() - dobDate.getMonth(); // Calculate month difference
+    // const dayDifference = today.getDate() - dobDate.getDate(); // Calculate day difference
 
     // Check if age is less than or equal to 18
     // if (age <= 18 || (age === 18 && (monthDifference < 0 || (monthDifference === 0 && dayDifference <= 0)))) {
@@ -85,13 +94,13 @@ function dobValidate(element) {
     // // If valid, clear custom validity
     // element.setCustomValidity("");
     // return true;
-    if(age <18 || age > 55) {
-        element.setCustomValidity("You must be between 18 and 55 years old.");
-        element.reportValidity();
-        return false;
-    }   else {
-        return true;
-    }
+    // if(age <18 || age > 55) {
+    //     element.setCustomValidity("You must be between 18 and 55 years old.");
+    //     element.reportValidity();
+    //     return false;
+    // }   else {
+    //     return true;
+    // }
 }
 
 // Fetch data from localStorage
@@ -114,18 +123,30 @@ function displayData() {
     const data = fetchData();
 
     const tablerow = data.map(element => {
-        const namecell= `<td>${element.name}</td>`;
-        const emailcell= `<td>${element.email}</td>`;
-        const passwordcell= `<td>${element.password}</td>`;
-        const dobcell= `<td>${element.dob}</td>`;
-        const termscell= `<td>${element.terms}</td>`;
+        const namecell = `<td>${element.name}</td>`;
+        const emailcell = `<td>${element.email}</td>`;
+        const passwordcell = `<td>${element.password}</td>`;
+        const dobcell = `<td>${element.dob}</td>`;
+        const termscell = `<td>${element.terms}</td>`;
 
-        const row = `<tr>${namecell} ${emailcell} ${passwordcell} ${dobcell} ${termscell}</tr>`;
-
+        const row = `<tr>${namecell}${emailcell}${passwordcell}${dobcell}${termscell}</tr>`;
         return row;
     }).join("\n");
 
-    const table = `<table><tr><th>Name</th><th>Email</th><th>Password</th><th>DOB</th><th>Accepted Terms?</th></tr>${tablerow}</table>`;
+    const table = `<table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Password</th>
+                <th>DOB</th>
+                <th>Accepted Terms?</th>
+            </tr>
+        </thead>
+        <tbody>
+            ${tablerow}
+        </tbody>
+    </table>`;
 
     const userEntries = document.getElementById("userEntries");
     userEntries.innerHTML = table;
